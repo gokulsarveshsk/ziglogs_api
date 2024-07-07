@@ -38,13 +38,27 @@ def create_log():
     if not isinstance(log, dict):
         return jsonify({"error": "Invalid input"}), 400
     
-    required_keys = ["app_name", "api_type", "api_response", "mobile_type", "input", "user_id", "user_name", "current_location"]
+    required_keys = [
+        "data_time",
+        "app_version",
+        "mobile_platform",
+        "user_currentLocation",
+        "user_id",
+        "user_name",
+        "api_type",
+        "user_input",
+        "api_response",
+        "api_time",
+        "error_message",
+        "status"
+    ]
+    
     for key in required_keys:
         if key not in log:
             return jsonify({"error": f"Missing key: {key}"}), 400
     
     # Determine the correct database and collection based on app_name
-    app_name = log['app_name']
+    app_name = log.get('app_name')
     if app_name == 'zig':
         logs_collection = logs_collection_zig
     elif app_name == 'mdot':
@@ -135,4 +149,4 @@ def get_all_users(app_name):
     return jsonify(logs), 200
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=8000)
